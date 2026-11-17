@@ -1,0 +1,83 @@
+{
+    "name": "alveby/atrium-seo",
+    "description": "SEO for Atrium: meta templates, hreflang across sites, sitemaps per language with images, IndexNow, schema.org JSON-LD, redirects with a 404 log, and an SEO check",
+    "type": "atrium-module",
+    "license": "MIT",
+    "homepage": "https://github.com/AlveBy/atrium",
+    "support": {
+        "issues": "https://github.com/AlveBy/atrium/issues",
+        "source": "https://github.com/AlveBy/atrium"
+    },
+    "keywords": [
+        "laravel",
+        "admin",
+        "cms",
+        "seo",
+        "sitemap",
+        "hreflang",
+        "schema.org",
+        "json-ld",
+        "redirects",
+        "indexnow",
+        "multisite",
+        "i18n"
+    ],
+    "require": {
+        "php": "^8.3",
+        "ext-dom": "*",
+        "ext-intl": "*",
+        "ext-xmlwriter": "*",
+        "illuminate/support": "^13.0",
+        "alveby/atrium": "^0.1"
+    },
+    "require-dev": {
+        "alveby/atrium-theme": "^0.1",
+        "alveby/atrium-brands": "^0.1",
+        "alveby/atrium-catalog": "^0.1",
+        "alveby/atrium-news": "^0.1",
+        "alveby/atrium-faq": "^0.1",
+        "alveby/atrium-reviews": "^0.1",
+        "alveby/atrium-stores": "^0.1",
+        "orchestra/testbench": "^11.0",
+        "phpunit/phpunit": "^12.5"
+    },
+    "suggest": {
+        "alveby/atrium-theme": "Draws the public pages the meta, hreflang and JSON-LD go into"
+    },
+    "autoload": {
+        "psr-4": {
+            "Atrium\\Seo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Atrium\\Seo\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "atrium": {
+            "key": "seo",
+            "title": "atrium-seo::seo.module",
+            "settings": "Atrium\\Seo\\SeoSettings",
+            "resources": [
+                "Atrium\\Seo\\Models\\Issue",
+                "Atrium\\Seo\\Models\\Redirect",
+                "Atrium\\Seo\\Models\\NotFound",
+                "Atrium\\Seo\\Models\\RedirectImport",
+                "Atrium\\Seo\\Models\\PageMeta",
+                "Atrium\\Seo\\Models\\Template"
+            ],
+            "migrations": "database/migrations"
+        },
+        "laravel": {
+            "providers": [
+                "Atrium\\Seo\\SeoServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
