@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Atrium\Seo\Tests\Feature;
 
 use Atrium\Admin\Models\Site;
+use Atrium\Admin\Support\Sites;
 use Atrium\Seo\Models\NotFound;
 use Atrium\Seo\Models\Redirect;
 use Atrium\Seo\Redirects\RedirectMap;
@@ -272,5 +273,15 @@ final class RedirectTest extends TestCase
 
         $redirect->delete();
         $this->get('/lost')->assertNotFound();
+    }
+
+    public function test_without_a_saved_site_the_page_answers_and_nothing_redirects(): void
+    {
+        $this->redirect('/old-page', '/new-page');
+        Site::query()->delete();
+        app(Sites::class)->flush();
+
+        $this->get('/old-page')->assertNotFound();
+        $this->assertSame([], app(RedirectMap::class)->problems());
     }
 }

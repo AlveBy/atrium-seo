@@ -214,6 +214,11 @@ final class RedirectMap
     {
         $siteId ??= $this->sites->current()->getKey();
 
+        if ($siteId === null) {
+            // No site is saved yet (a fresh install, or a demo in the middle of its reset): nothing redirects.
+            return ['exact' => [], 'prefix' => []];
+        }
+
         return $this->maps[$siteId] ??= Cache::rememberForever(
             'atrium.seo.redirects.'.$siteId.'.'.Cache::get(self::VERSION_KEY, '0'),
             static fn (): array => self::build($siteId),

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace Atrium\Seo\Tests\Feature;
 
 use Atrium\Admin\Models\Site;
+use Atrium\Admin\Support\Sites;
 use Atrium\Seo\Models\NotFound;
 use Atrium\Seo\Redirects\NotFoundLog;
 use Atrium\Seo\Tests\TestCase;
@@ -125,5 +126,16 @@ final class NotFoundLogTest extends TestCase
     public function test_the_log_cannot_be_filled_by_hand(): void
     {
         $this->actingAs($this->admin(), 'admin')->get('/admin/seo_not_found/create')->assertForbidden();
+    }
+
+    public function test_without_a_saved_site_a_missing_address_is_not_logged(): void
+    {
+        Site::query()->delete();
+        app(Sites::class)->flush();
+
+        $this->get('/lost')->assertNotFound();
+        app(NotFoundLog::class)->hit('/lost-too', null);
+
+        $this->assertSame(0, NotFound::query()->withoutGlobalScopes()->count());
     }
 }

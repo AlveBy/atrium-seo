@@ -38,6 +38,12 @@ final class NotFoundLog
         }
 
         $siteId ??= $this->sites->current()->getKey();
+
+        if ($siteId === null) {
+            // No site is saved yet: there is nothing to file the address under.
+            return;
+        }
+
         $referer = $referer === null ? null : mb_substr($referer, 0, 2048);
 
         try {
