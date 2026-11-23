@@ -74,6 +74,12 @@ class RedirectImport extends Model implements Administrable
         return __('atrium-seo::seo.create.import');
     }
 
+    /** Service records, not content: no custom fields, no link target. */
+    public static function isContentModule(): bool
+    {
+        return false;
+    }
+
     public static function getAdminRoutePrefix(): string
     {
         return 'seo_redirect_imports';

@@ -14,6 +14,7 @@ use Atrium\Admin\Contracts\Administrable;
 use Atrium\Admin\Fields\SelectField;
 use Atrium\Admin\Fields\TextareaField;
 use Atrium\Admin\Fields\TextField;
+use Atrium\Admin\Models\Site;
 use Atrium\Admin\Resources\ResourceRegistry;
 use Atrium\Admin\Traits\BelongsToSite;
 use Atrium\Admin\Traits\InteractsWithAdmin;
@@ -60,13 +61,19 @@ class Template extends Model implements Administrable
         return __('atrium-seo::seo.create.template');
     }
 
+    /** Service records, not content: no custom fields, no link target. */
+    public static function isContentModule(): bool
+    {
+        return false;
+    }
+
     public static function getAdminRoutePrefix(): string
     {
         return 'seo_templates';
     }
 
     /**
-     * Every module of the panel, by class, and "*" for all of them.
+     * Every content module of the panel, by class, and "*" for all of them.
      *
      * @return array<string,string>
      */
@@ -74,10 +81,10 @@ class Template extends Model implements Administrable
     {
         $options = [Templates::ANY => __('atrium-seo::seo.templates.any')];
 
-        foreach (app(ResourceRegistry::class)->all() as $model) {
-            // The panel's own records (sites, languages, administrators)
-            // and this module's have no public pages.
-            if (! str_starts_with($model, 'Atrium\\Seo\\') && ! str_starts_with($model, 'Atrium\\Admin\\')) {
+        foreach (app(ResourceRegistry::class)->content() as $model) {
+            // Service records (logs, submissions, languages, this module's
+            // own) and the sites have no public pages.
+            if ($model !== Site::class) {
                 $options[$model] = $model::getAdminLabel();
             }
         }
