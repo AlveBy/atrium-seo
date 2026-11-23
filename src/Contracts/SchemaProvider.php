@@ -36,7 +36,7 @@ use Atrium\Seo\SeoPage;
  * and registers it from its service provider (nothing is loaded while the
  * SEO module is not installed):
  *
- *     config()->push('atrium-seo.schema', EventSchema::class);
+ *     \Atrium\Admin\Support\ConfigList::add('atrium-seo.schema', EventSchema::class);
  *
  * The nodes of all providers go into one <script type="application/ld+json">
  * with an "@graph"; "@context" is added there. Give the node about the page

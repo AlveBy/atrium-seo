@@ -45,11 +45,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | Classes implementing Atrium\Seo\Contracts\SchemaProvider. Each module
-    | pushes its own from its service provider:
+    | adds its own from its service provider, once (a plain push would add it
+    | again after config:cache):
     |
-    |     config()->push('atrium-seo.schema', EventSchema::class);
+    |     \Atrium\Admin\Support\ConfigList::add('atrium-seo.schema', EventSchema::class);
     |
-    | Pushing a class name loads nothing: it is resolved only when this module
+    | Adding a class name loads nothing: it is resolved only when this module
     | is installed and a page is drawn.
     |
     */
